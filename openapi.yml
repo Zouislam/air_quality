@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Air Quality API
+  description: API for retrieving air quality data
+
+paths:
+  /air_quality:
+    get:
+      summary: Get air quality data for the nearest city to a given latitude and longitude
+      parameters:
+        - name: latitude
+          in: query
+          description: The latitude of the location
+          required: true
+          schema:
+            type: number
+        - name: longitude
+          in: query
+          description: The longitude of the location
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Result:
+                    type: object
+                    properties:
+                      Pollution:
+                        type: object
+                        properties:
+                          ts:
+                            type: string
+                            description: The timestamp of the pollution data
+                          aqius:
+                            type: number
+                            description: The AQI (Air Quality Index) for the US EPA standard
+                          mainus:
+                            type: string
+                            description: The main pollutant for the US EPA standard
+                          aqicn:
+                            type: number
+                            description: The AQI for the China MEP standard
+                          maincn:
+                            type: string
+                            description: The main pollutant for the China MEP standard
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /most_polluted_datetime:
+    get:
+      summary: Get the datetime of the most polluted location in the database
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  datetime:
+                    type: string
+                    description: The datetime of the most polluted location
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
